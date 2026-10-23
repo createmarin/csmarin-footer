@@ -1,4 +1,4 @@
-こうしたよ。class CsmarinFooter extends HTMLElement {
+class CsmarinFooter extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
