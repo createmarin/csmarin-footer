@@ -224,14 +224,14 @@ class CsmarinFooter extends HTMLElement {
             <img src="https://res.cloudinary.com/oq5ci33v/image/upload/v1789803840/bilog%E3%82%8D%E3%81%93%E3%82%99.png" alt="Bilog" class="csmarin-logo-large">
           </a>
 
-          <!-- 2. ストア -->
+          <!-- 2. CSMストアstores -->
           <a href="https://csmarin.stores.jp" class="csmarin-block" target="_blank" rel="noopener">
             <img src="https://res.cloudinary.com/oq5ci33v/image/upload/v1792672042/csmstores.png" alt="csmストア" class="csmarin-logo-store">
           </a>
 
-          <!-- 3. CSM-ID -->
-          <a href="http://id.csmarin.com" class="csmarin-block" target="_blank" rel="noopener">
-            <img src="http://id.csmarin.com/wp-content/uploads/2026/07/CSM-ID-%E9%80%8F%E9%81%8E%E3%83%AD%E3%82%B4.png" alt="CSM-ID" class="csmarin-logo-small">
+          <!-- 3. CSMグッズ -->
+          <a href="http://goods.csmarin.com" class="csmarin-block" target="_blank" rel="noopener">
+            <img src="https://res.cloudinary.com/oq5ci33v/image/upload/v1792672042/csm%E3%82%AF%E3%82%99%E3%83%83%E3%82%B9%E3%82%99.png" alt="CSMグッズ" class="csmarin-logo-small">
           </a>
 
           <!-- 4. coming soon... -->
@@ -242,9 +242,8 @@ class CsmarinFooter extends HTMLElement {
 
           <!-- 6. 眞凛 -->
           <a href="https://ninja-link.jp/marin_dayo_11" class="csmarin-block" target="_blank" rel="noopener">
-            <img src="https://res.cloudinary.com/oq5ci33v/image/upload/v1792757071/IMG_0566.png" alt="眞凛" class="csmarin-logo-small">
+            <img src="https://res.cloudinary.com/oq5ci33v/image/upload/v1792757071/IMG_0566.png" alt="眞凛" class="csmarin-logo-large">
           </a>
-
 
           <!-- 7. coming soon... -->
           <div class="csmarin-block csmarin-block-coming">coming soon...</div>
@@ -276,7 +275,7 @@ class CsmarinFooter extends HTMLElement {
           <div class="csmarin-menu-section">
             <div class="csmarin-menu-title">メディア</div>
             <a href="https://www.youtube.com/@csmarin_kosiki" class="csmarin-menu-link" target="_blank" rel="noopener">公式YouTube</a>
-            <a href="https://x.com/csmarin_kosiki" class="csmarin-menu-link" target="_blank" rel="noopener">公式X (@csmarin_kosiki)</a>
+            <a href="https://x.com/csmarin_kosiki" class="csmarin-menu-link" target="_blank" rel="noopener">公式Twitter (@csmarin_kosiki)</a>
           </div>
 
       </div>
