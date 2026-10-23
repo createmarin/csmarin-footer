@@ -272,16 +272,9 @@ class CsmarinFooter extends HTMLElement {
         <div class="csmarin-gmo-dropdown" id="csmarinDropdown">
           <div class="csmarin-menu-section">
             <div class="csmarin-menu-title">メディア</div>
-            <a href="https://bilog.csmarin.com" class="csmarin-menu-link" target="_blank" rel="noopener">Bilog</a>
             <a href="https://www.youtube.com/@csmarin_kosiki" class="csmarin-menu-link" target="_blank" rel="noopener">公式YouTube</a>
             <a href="https://x.com/csmarin_kosiki" class="csmarin-menu-link" target="_blank" rel="noopener">公式X (@csmarin_kosiki)</a>
           </div>
-
-          <div class="csmarin-menu-section">
-            <div class="csmarin-menu-title">ストア</div>
-            <a href="https://csmarin.stores.jp" class="csmarin-menu-link" target="_blank" rel="noopener">ストア</a>
-          </div>
-        </div>
 
       </div>
     `;
