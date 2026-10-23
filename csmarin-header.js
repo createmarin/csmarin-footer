@@ -1,426 +1,312 @@
-class CsmarinHeader extends HTMLElement {
-  constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-  }
+こうしたよ。class CsmarinFooter extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+  }
 
-  connectedCallback() {
-    this.render();
-    this.setupEvents();
-    this.adjustForAdminBar() {
-  const applyOffset = () => {
-    const isAdminBar = document.body.classList.contains('admin-bar');
-    let offset = 0;
+  connectedCallback() {
+    this.render();
+    this.setupEvents();
+  }
 
-    if (isAdminBar) {
-      const isMobile = window.innerWidth <= 782;
-      offset = isMobile ? 46 : 32;
-    }
+  render() {
+    this.shadowRoot.innerHTML = `
+      <style>
+        :host {
+          all: initial;
+          display: block !important;
+          position: fixed !important;
+          bottom: 0 !important;
+          left: 0 !important;
+          right: 0 !important;
+          width: 100% !important;
+          z-index: 999999 !important;
+          box-sizing: border-box !important;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+        }
 
-    // 共通ヘッダー自体の位置調整
-    this.style.setProperty('--admin-bar-offset', `${offset}px`);
+        *, *::before, *::after {
+          box-sizing: border-box !important;
+        }
 
-    // 既存サイトのbodyおよびfixedヘッダーを共通ヘッダー分(42px)押し下げる
-    const totalTopMargin = offset + 42;
-    document.body.style.paddingTop = `${totalTopMargin}px`;
+        /* フッター全体コンテナ */
+        .csmarin-footer-container {
+          width: 100% !important;
+          background-color: #00bcd4 !important; /* シアン背景 */
+          padding: 12px 16px 0 16px !important;
+          box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15) !important;
+          pointer-events: auto !important;
+          position: relative !important;
+        }
 
-    // 固定表示されている主要なヘッダー要素を探して位置補正
-    const siteHeaders = document.querySelectorAll('header, .site-header, #masthead, .nav-container');
-    siteHeaders.forEach(header => {
-      const style = window.getComputedStyle(header);
-      if (style.position === 'fixed' || style.position === 'sticky') {
-        header.style.top = `${totalTopMargin}px`;
-      }
-    });
-  };
+        /* 5x2 グリッドレイアウト */
+        .csmarin-services-grid {
+          display: grid !important;
+          grid-template-columns: repeat(5, 1fr) !important;
+          grid-template-rows: repeat(2, 1fr) !important;
+          gap: 10px !important;
+          max-width: 1200px !important;
+          margin: 0 auto 12px auto !important;
+        }
 
-  applyOffset();
-  window.addEventListener('resize', applyOffset);
-}
-  }
+        /* 長方形ブロック共通スタイル */
+        .csmarin-block {
+          background-color: #ffffff !important;
+          border-radius: 8px !important;
+          height: 54px !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          padding: 6px 10px !important;
+          text-decoration: none !important;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12) !important;
+          transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+        }
 
-  render() {
-    this.shadowRoot.innerHTML = `
-      <style>
-        :host {
-          all: initial;
-          display: block !important;
-          position: fixed !important;
-          top: var(--admin-bar-offset, 0px) !important;
-          right: 0 !important;
-          left: 0 !important;
-          width: 100% !important;
-          height: 42px !important;
-          z-index: 999999 !important;
-          box-sizing: border-box !important;
-          transition: top 0.2s ease !important;
-          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
-        }
+        .csmarin-block:hover {
+          transform: translateY(-2px) !important;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.18) !important;
+        }
 
-        *, *::before, *::after {
-          box-sizing: border-box !important;
-        }
+        /* 1. 大きめの横長ロゴ（Bilog用） */
+        .csmarin-logo-large {
+          max-height: 32px !important;
+          max-width: 100% !important;
+          width: auto !important;
+          object-fit: contain !important;
+          display: block !important;
+        }
 
-        .csmarin-header-wrapper {
-          width: 100% !important;
-          height: 42px !important;
-          background-color: #00bcd4 !important; /* 全幅の水色背景 */
-          display: flex !important;
-          align-items: center !important;
-          justify-content: space-between !important;
-          padding-left: 16px !important;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
-          pointer-events: auto !important;
-          position: relative !important;
-        }
+        /* 2. ストア用ロゴ */
+        .csmarin-logo-store {
+          max-height: 100px !important;
+          max-width: 100% !important;
+          width: auto !important;
+          object-fit: contain !important;
+          display: block !important;
+        }
 
-        /* 左側：テキストエリア（スクロールなし全文表示） */
-        .csmarin-notice-area {
-          display: flex !important;
-          align-items: center !important;
-          overflow: hidden !important;
-          padding-right: 12px !important;
-        }
+        /* 3. 小さめのロゴ（CSM-ID用など） */
+        .csmarin-logo-small {
+          max-height: 60px !important;
+          max-width: 100% !important;
+          width: auto !important;
+          object-fit: contain !important;
+          display: block !important;
+        }
 
-        .csmarin-notice-text {
-          font-size: 12px !important;
-          font-weight: 500 !important;
-          color: #ffffff !important;
-          text-decoration: none !important;
-          white-space: nowrap !important;
-          overflow: hidden !important;
-          text-overflow: ellipsis !important;
-          transition: opacity 0.2s !important;
-        }
+        /* coming soon... ブロック */
+        .csmarin-block-coming {
+          background-color: rgba(255, 255, 255, 0.6) !important;
+          color: #555555 !important;
+          font-size: 12px !important;
+          font-weight: bold !important;
+          font-style: italic !important;
+          cursor: default !important;
+        }
 
-        .csmarin-notice-text:hover {
-          opacity: 0.85 !important;
-        }
+        .csmarin-block-coming:hover {
+          transform: none !important;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12) !important;
+        }
 
-        /* 右側：白カプセル本体（ロゴ・9ドットボタン） */
-        .csmarin-capsule-body {
-          position: relative !important;
-          z-index: 2 !important;
-          background-color: #ffffff !important;
-          height: 42px !important;
-          display: flex !important;
-          align-items: center !important;
-          gap: 10px !important;
-          padding: 0 16px !important;
-          border-bottom-left-radius: 20px !important;
-          flex-shrink: 0 !important;
-        }
+        /* 右下：メニュー用ブロックボタン */
+        .csmarin-menu-block-btn {
+          border: none !important;
+          cursor: pointer !important;
+          width: 100% !important;
+          color: #00bcd4 !important;
+          font-weight: bold !important;
+          font-size: 13px !important;
+          gap: 8px !important;
+        }
 
-        /* 9点ドットメニューボタン */
-        .csmarin-gmo-menu-btn {
-          background: none !important;
-          border: none !important;
-          padding: 0 !important;
-          display: flex !important;
-          align-items: center !important;
-          justify-content: center !important;
-          width: 24px !important;
-          height: 24px !important;
-          border-radius: 4px !important;
-          cursor: pointer !important;
-          flex-shrink: 0 !important;
-          transition: background-color 0.2s !important;
-        }
+        .csmarin-menu-block-btn svg {
+          width: 20px !important;
+          height: 20px !important;
+          fill: #00bcd4 !important;
+        }
 
-        .csmarin-gmo-menu-btn:hover {
-          background-color: #f0f0f0 !important;
-        }
+        /* 最下段：横一列ブランドロゴエリア（背景白） */
+        .csmarin-brand-logo-container {
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          background-color: #ffffff !important;
+          margin: 0 -16px !important;
+          padding: 8px 16px !important;
+          border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
+        }
 
-        .csmarin-gmo-menu-btn svg {
-          width: 18px !important;
-          height: 18px !important;
-          fill: #00bcd4 !important;
-          display: block !important;
-        }
+        .csmarin-horizontal-logo-img {
+          height: 20px !important;
+          width: auto !important;
+          display: block !important;
+        }
 
-        /* ロゴ並列エリア */
-        .csmarin-logos-group {
-          display: flex !important;
-          align-items: center !important;
-          gap: 8px !important;
-        }
+        /* 右下メニューから上へ開くポップアップ */
+        .csmarin-gmo-dropdown {
+          position: absolute !important;
+          bottom: 86px !important;
+          right: 16px !important;
+          width: 280px !important;
+          background-color: #ffffff !important;
+          border: 1px solid #e0e0e0 !important;
+          border-radius: 12px !important;
+          box-shadow: 0 -8px 24px rgba(0,0,0,0.18) !important;
+          padding: 16px !important;
+          z-index: 100000 !important;
+          text-align: left !important;
+          overflow: hidden !important;
+          opacity: 0 !important;
+          visibility: hidden !important;
+          transform: translateY(15px) scaleY(0.9) !important;
+          transform-origin: bottom right !important;
+          transition: transform 0.25s ease, opacity 0.2s ease, visibility 0.25s !important;
+        }
 
-        .csmarin-gmo-logo-link {
-          display: flex !important;
-          align-items: center !important;
-          text-decoration: none !important;
-          flex-shrink: 0 !important;
-        }
+        .csmarin-gmo-dropdown.is-open {
+          opacity: 1 !important;
+          visibility: visible !important;
+          transform: translateY(0) scaleY(1) !important;
+        }
 
-        .csmarin-csmgroup-logo-img {
-          height: 20px !important;
-          width: auto !important;
-          display: block !important;
-        }
+        .csmarin-menu-section {
+          margin-bottom: 10px !important;
+          padding-bottom: 8px !important;
+          border-bottom: 1px solid #eee !important;
+        }
 
-        .csmarin-studio-logo-img {
-          height: 20px !important;
-          width: auto !important;
-          display: block !important;
-        }
+        .csmarin-menu-section:last-child {
+          margin-bottom: 0 !important;
+          padding-bottom: 0 !important;
+          border-bottom: none !important;
+        }
 
-        /* ロゴ間の仕切り線 */
-        .csmarin-logo-divider {
-          width: 1px !important;
-          height: 14px !important;
-          background-color: #d0d0d0 !important;
-          flex-shrink: 0 !important;
-        }
+        .csmarin-menu-title {
+          font-size: 11px !important;
+          font-weight: bold !important;
+          color: #888888 !important;
+          margin-bottom: 4px !important;
+          text-transform: uppercase !important;
+        }
 
-        /* ドロップダウンメニュー */
-        .csmarin-gmo-dropdown {
-          position: absolute !important;
-          top: 46px !important;
-          right: 10px !important;
-          width: 280px !important;
-          background-color: #ffffff !important;
-          border: 1px solid #e0e0e0 !important;
-          border-radius: 12px !important;
-          box-shadow: 0 8px 24px rgba(0,0,0,0.18) !important;
-          padding: 16px !important;
-          z-index: 100000 !important;
-          text-align: left !important;
-          overflow: hidden !important;
-          opacity: 0 !important;
-          visibility: hidden !important;
-          transform: translateY(-15px) scaleY(0.9) !important;
-          transform-origin: top right !important;
-          transition: transform 0.25s ease, opacity 0.2s ease, visibility 0.25s !important;
-        }
+        .csmarin-menu-link {
+          display: block !important;
+          font-size: 13px !important;
+          color: #333333 !important;
+          text-decoration: none !important;
+          padding: 4px 6px !important;
+          border-radius: 4px !important;
+        }
 
-        .csmarin-gmo-dropdown.is-open {
-          opacity: 1 !important;
-          visibility: visible !important;
-          transform: translateY(0) scaleY(1) !important;
-        }
+        .csmarin-menu-link:hover {
+          background-color: rgba(0, 188, 212, 0.08) !important;
+          color: #00bcd4 !important;
+        }
 
-        .csmarin-menu-cyan-shape {
-          position: absolute !important;
-          top: -15px !important;
-          right: -20px !important;
-          width: 120px !important;
-          height: 50px !important;
-          background-color: #00bcd4 !important;
-          border-bottom-left-radius: 50px !important;
-          opacity: 0.85 !important;
-          pointer-events: none !important;
-          z-index: 0 !important;
-        }
+        /* モバイル対応：画面幅に合わせて列数を調整 */
+        @media (max-width: 768px) {
+          .csmarin-services-grid {
+            grid-template-columns: repeat(3, 1fr) !important;
+          }
+        }
 
-        .csmarin-dropdown-content {
-          position: relative !important;
-          z-index: 1 !important;
-        }
+        @media (max-width: 480px) {
+          .csmarin-services-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+        }
+      </style>
 
-        .csmarin-menu-section {
-          margin-bottom: 12px !important;
-          padding-bottom: 10px !important;
-          border-bottom: 1px solid #eee !important;
-        }
+      <div class="csmarin-footer-container">
+        <!-- 5x2 サービスブロック群 -->
+        <div class="csmarin-services-grid">
+          <!-- 1. Bilog（大きめの横長ロゴ用クラス） -->
+          <a href="https://bilog.csmarin.com" class="csmarin-block" target="_blank" rel="noopener">
+            <img src="https://res.cloudinary.com/oq5ci33v/image/upload/v1789803840/bilog%E3%82%8D%E3%81%93%E3%82%99.png" alt="Bilog" class="csmarin-logo-large">
+          </a>
 
-        .csmarin-menu-section:last-child {
-          margin-bottom: 0 !important;
-          padding-bottom: 0 !important;
-          border-bottom: none !important;
-        }
+          <!-- 2. ストア（ストア用クラス） -->
+          <a href="https://csmarin.stores.jp" class="csmarin-block" target="_blank" rel="noopener">
+            <img src="https://res.cloudinary.com/oq5ci33v/image/upload/v1792672042/csmstores.png" alt="csmストア" class="csmarin-logo-store">
+          </a>
 
-        .csmarin-menu-title {
-          font-size: 11px !important;
-          font-weight: bold !important;
-          color: #888888 !important;
-          margin-bottom: 6px !important;
-          text-transform: uppercase !important;
-        }
+          <!-- 3. CSM-ID（小さめのロゴ用クラス：大きく表示） -->
+          <a href="http://id.csmarin.com" class="csmarin-block" target="_blank" rel="noopener">
+            <img src="http://id.csmarin.com/wp-content/uploads/2026/07/CSM-ID-%E9%80%8F%E9%81%8E%E3%83%AD%E3%82%B4.png" alt="CSM-ID" class="csmarin-logo-small">
+          </a>
 
-        .csmarin-menu-link {
-          display: block !important;
-          font-size: 13px !important;
-          color: #333333 !important;
-          text-decoration: none !important;
-          padding: 5px 8px !important;
-          border-radius: 4px !important;
-          transition: background-color 0.2s, color 0.2s !important;
-        }
+          <!-- 4. coming soon... -->
+          <div class="csmarin-block csmarin-block-coming">coming soon...</div>
 
-        .csmarin-menu-link:hover {
-          background-color: rgba(0, 188, 212, 0.08) !important;
-          color: #00bcd4 !important;
-        }
+          <!-- 5. coming soon... -->
+          <div class="csmarin-block csmarin-block-coming">coming soon...</div>
 
-        .csmarin-id-section {
-          background-color: #f9f9f9 !important;
-          padding: 10px !important;
-          border-radius: 6px !important;
-        }
+          <!-- 6. coming soon... -->
+          <div class="csmarin-block csmarin-block-coming">coming soon...</div>
 
-        .csmarin-id-header {
-          display: flex !important;
-          align-items: center !important;
-          margin-bottom: 8px !important;
-        }
+          <!-- 7. coming soon... -->
+          <div class="csmarin-block csmarin-block-coming">coming soon...</div>
 
-        .csmarin-id-logo {
-          height: 20px !important;
-          width: auto !important;
-          display: block !important;
-        }
+          <!-- 8. coming soon... -->
+          <div class="csmarin-block csmarin-block-coming">coming soon...</div>
 
-        .csmarin-id-buttons {
-          display: flex !important;
-          gap: 8px !important;
-        }
+          <!-- 9. coming soon... -->
+          <div class="csmarin-block csmarin-block-coming">coming soon...</div>
 
-        .csmarin-id-btn {
-          flex: 1 !important;
-          text-align: center !important;
-          font-size: 12px !important;
-          padding: 6px 0 !important;
-          border-radius: 4px !important;
-          text-decoration: none !important;
-          font-weight: bold !important;
-          transition: opacity 0.2s !important;
-        }
+          <!-- 10. 右下：メニュー用ブロック -->
+          <button type="button" class="csmarin-block csmarin-menu-block-btn" id="csmarinMenuToggle">
+            <svg viewBox="0 0 24 24">
+              <path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2ZM6 4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 12c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+            </svg>
+            <span>メニュー</span>
+          </button>
+        </div>
 
-        .csmarin-id-btn-register {
-          background-color: #00bcd4 !important;
-          color: #ffffff !important;
-        }
+        <!-- 最下段：横一列ブランドロゴ（背景白） -->
+        <div class="csmarin-brand-logo-container">
+          <a href="https://csmarin.com" target="_blank" rel="noopener">
+            <img src="https://res.cloudinary.com/oq5ci33v/image/upload/v1792672042/CS%E7%9C%9E%E5%87%9B%E6%A8%AA%E4%B8%80%E5%88%97%E3%83%AD%E3%82%B3%E3%82%99.png" alt="CSMGROUP & クリエイティブスタジオ眞凛" class="csmarin-horizontal-logo-img">
+          </a>
+        </div>
 
-        .csmarin-id-btn-login {
-          background-color: #e0e0e0 !important;
-          color: #333333 !important;
-        }
+        <!-- ドロップダウンメニュー -->
+        <div class="csmarin-gmo-dropdown" id="csmarinDropdown">
+          <div class="csmarin-menu-section">
+            <div class="csmarin-menu-title">メディア</div>
+            <a href="https://bilog.csmarin.com" class="csmarin-menu-link" target="_blank" rel="noopener">Bilog</a>
+            <a href="https://www.youtube.com/@csmarin_kosiki" class="csmarin-menu-link" target="_blank" rel="noopener">公式YouTube</a>
+            <a href="https://x.com/csmarin_kosiki" class="csmarin-menu-link" target="_blank" rel="noopener">公式X (@csmarin_kosiki)</a>
+          </div>
 
-        .csmarin-id-btn:hover {
-          opacity: 0.85 !important;
-        }
+          <div class="csmarin-menu-section">
+            <div class="csmarin-menu-title">ストア</div>
+            <a href="https://csmarin.stores.jp" class="csmarin-menu-link" target="_blank" rel="noopener">ストア</a>
+          </div>
+        </div>
 
-        /* スマホ対応 */
-        @media (max-width: 640px) {
-          .csmarin-studio-logo-img {
-            display: none !important;
-          }
-          .csmarin-logo-divider {
-            display: none !important;
-          }
-        }
+      </div>
+    `;
+  }
 
-        @media (max-width: 480px) {
-          .csmarin-notice-area {
-            display: none !important;
-          }
-          .csmarin-header-wrapper {
-            justify-content: flex-end !important;
-            padding-left: 0 !important;
-          }
-        }
-      </style>
+  setupEvents() {
+    const toggleBtn = this.shadowRoot.getElementById('csmarinMenuToggle');
+    const dropdown = this.shadowRoot.getElementById('csmarinDropdown');
 
-      <div class="csmarin-header-wrapper">
-        <!-- 左側：全文表示テキスト -->
-        <div class="csmarin-notice-area">
-          <a href="http://id.csmarin.com/register?subscription_plan=10" class="csmarin-notice-text" target="_blank" rel="noopener">
-            CSM-ID会員募集中！ 無料登録で全サービスを快適に利用できます
-          </a>
-        </div>
+    if (toggleBtn && dropdown) {
+      toggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdown.classList.toggle('is-open');
+      });
 
-        <!-- 右側：白カプセル（9ドットボタン + 併設ロゴ） -->
-        <div class="csmarin-capsule-body">
-          <button type="button" class="csmarin-gmo-menu-btn" id="csmarinMenuToggle" title="メニュー">
-            <svg viewBox="0 0 24 24">
-              <path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2ZM6 4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 12c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-            </svg>
-          </button>
-
-          <div class="csmarin-logos-group">
-            <!-- CSMGROUP ロゴ -->
-            <a href="https://csmarin.com" class="csmarin-gmo-logo-link" target="_blank" rel="noopener">
-              <img src="https://res.cloudinary.com/oq5ci33v/image/upload/f_auto,q_auto/CSMGROUP%E3%83%AD%E3%82%B3%E3%82%99" alt="CSMGROUP" class="csmarin-csmgroup-logo-img">
-            </a>
-
-            <div class="csmarin-logo-divider"></div>
-
-            <!-- クリエイティブスタジオ眞凛 ロゴ -->
-            <a href="https://csmarin.com" class="csmarin-gmo-logo-link" target="_blank" rel="noopener">
-              <img src="https://res.cloudinary.com/oq5ci33v/image/upload/v1789803772/CS%E7%9C%9E%E5%87%9B%E6%96%B0%E3%83%AD%E3%82%B3%E3%82%99%E5%92%8C%E6%96%87%E9%9D%92%E8%B5%A4%E9%80%8F%E9%81%8E.png" alt="クリエイティブスタジオ眞凛" class="csmarin-studio-logo-img">
-            </a>
-          </div>
-        </div>
-
-        <!-- ドロップダウンメニュー -->
-        <div class="csmarin-gmo-dropdown" id="csmarinDropdown">
-          <div class="csmarin-menu-cyan-shape"></div>
-          
-          <div class="csmarin-dropdown-content">
-            <div class="csmarin-menu-section">
-              <div class="csmarin-menu-title">メディア</div>
-              <a href="https://bilog.csmarin.com" class="csmarin-menu-link" target="_blank" rel="noopener">Bilog</a>
-              <a href="https://www.youtube.com/@csmarin_kosiki" class="csmarin-menu-link" target="_blank" rel="noopener">公式YouTube</a>
-              <a href="https://x.com/csmarin_kosiki" class="csmarin-menu-link" target="_blank" rel="noopener">公式X (@csmarin_kosiki)</a>
-              <a href="https://www.youtube.com/channel/UCrN8T2picalcO4oajrPcUkg" class="csmarin-menu-link" target="_blank" rel="noopener">眞凛CREATECHANNEL</a>
-            </div>
-
-            <div class="csmarin-menu-section">
-              <div class="csmarin-menu-title">ストア</div>
-              <a href="https://csmarin.stores.jp" class="csmarin-menu-link" target="_blank" rel="noopener">ストア</a>
-            </div>
-
-            <div class="csmarin-menu-section csmarin-id-section">
-              <div class="csmarin-id-header">
-                <img src="https://res.cloudinary.com/oq5ci33v/image/upload/v1789803771/CSM-ID_%E9%80%8F%E9%81%8E%E3%83%AD%E3%82%B3%E3%82%99.png" alt="CSM-ID" class="csmarin-id-logo">
-              </div>
-              <div class="csmarin-id-buttons">
-                <a href="http://id.csmarin.com/register?subscription_plan=10" class="csmarin-id-btn csmarin-id-btn-register" target="_blank" rel="noopener">会員登録</a>
-                <a href="http://id.csmarin.com/login?subscription_plan=10" class="csmarin-id-btn csmarin-id-btn-login" target="_blank" rel="noopener">ログイン</a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    `;
-  }
-
-  setupEvents() {
-    const toggleBtn = this.shadowRoot.getElementById('csmarinMenuToggle');
-    const dropdown = this.shadowRoot.getElementById('csmarinDropdown');
-
-    if (toggleBtn && dropdown) {
-      toggleBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        dropdown.classList.toggle('is-open');
-      });
-
-      document.addEventListener('click', (e) => {
-        if (!e.composedPath().includes(dropdown) && !e.composedPath().includes(toggleBtn)) {
-          dropdown.classList.remove('is-open');
-        }
-      });
-    }
-  }
-
-  adjustForAdminBar() {
-    const applyOffset = () => {
-      const isAdminBar = document.body.classList.contains('admin-bar');
-      if (!isAdminBar) {
-        this.style.setProperty('--admin-bar-offset', '0px');
-        return;
-      }
-
-      const isMobile = window.innerWidth <= 782;
-      const adminBarHeight = isMobile ? 46 : 32;
-
-      this.style.setProperty('--admin-bar-offset', `${adminBarHeight}px`);
-    };
-
-    applyOffset();
-    window.addEventListener('resize', applyOffset);
-  }
+      document.addEventListener('click', (e) => {
+        if (!e.composedPath().includes(dropdown) && !e.composedPath().includes(toggleBtn)) {
+          dropdown.classList.remove('is-open');
+        }
+      });
+    }
+  }
 }
 
-customElements.define('csmarin-header', CsmarinHeader);
+customElements.define('csmarin-footer', CsmarinFooter);
