@@ -15,10 +15,7 @@ class CsmarinFooter extends HTMLElement {
         :host {
           all: initial;
           display: block !important;
-          position: fixed !important;
-          bottom: 0 !important;
-          left: 0 !important;
-          right: 0 !important;
+          position: static !important; /* 追従を解除 */
           width: 100% !important;
           z-index: 999999 !important;
           box-sizing: border-box !important;
@@ -222,17 +219,17 @@ class CsmarinFooter extends HTMLElement {
       <div class="csmarin-footer-container">
         <!-- 5x2 サービスブロック群 -->
         <div class="csmarin-services-grid">
-          <!-- 1. Bilog（大きめの横長ロゴ用クラス） -->
+          <!-- 1. Bilog -->
           <a href="https://bilog.csmarin.com" class="csmarin-block" target="_blank" rel="noopener">
             <img src="https://res.cloudinary.com/oq5ci33v/image/upload/v1789803840/bilog%E3%82%8D%E3%81%93%E3%82%99.png" alt="Bilog" class="csmarin-logo-large">
           </a>
 
-          <!-- 2. ストア（ストア用クラス） -->
+          <!-- 2. ストア -->
           <a href="https://csmarin.stores.jp" class="csmarin-block" target="_blank" rel="noopener">
             <img src="https://res.cloudinary.com/oq5ci33v/image/upload/v1792672042/csmstores.png" alt="csmストア" class="csmarin-logo-store">
           </a>
 
-          <!-- 3. CSM-ID（小さめのロゴ用クラス：大きく表示） -->
+          <!-- 3. CSM-ID -->
           <a href="http://id.csmarin.com" class="csmarin-block" target="_blank" rel="noopener">
             <img src="http://id.csmarin.com/wp-content/uploads/2026/07/CSM-ID-%E9%80%8F%E9%81%8E%E3%83%AD%E3%82%B4.png" alt="CSM-ID" class="csmarin-logo-small">
           </a>
