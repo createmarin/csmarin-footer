@@ -240,8 +240,11 @@ class CsmarinFooter extends HTMLElement {
           <!-- 5. coming soon... -->
           <div class="csmarin-block csmarin-block-coming">coming soon...</div>
 
-          <!-- 6. coming soon... -->
-          <div class="csmarin-block csmarin-block-coming">coming soon...</div>
+          <!-- 6. 眞凛 -->
+          <a href="https://ninja-link.jp/marin_dayo_11" class="csmarin-block" target="_blank" rel="noopener">
+            <img src="https://res.cloudinary.com/oq5ci33v/image/upload/v1792757071/IMG_0566.png" alt="眞凛" class="csmarin-logo-small">
+          </a>
+
 
           <!-- 7. coming soon... -->
           <div class="csmarin-block csmarin-block-coming">coming soon...</div>
