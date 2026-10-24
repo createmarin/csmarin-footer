@@ -78,7 +78,7 @@ render() { this.shadowRoot.innerHTML = ` <style> :host { all: initial; display: 
     /* CSMストアのロゴを個別に拡大 */
     .csmarin-block img.csmarin-logo-store {
       max-width: 100% !important;
-      max-height: 48px !important;
+      max-height: 75px !important;
       width: 100% !important;
       height: auto !important;
       object-fit: contain !important;
