@@ -74,6 +74,17 @@ render() { this.shadowRoot.innerHTML = ` <style> :host { all: initial; display: 
       flex: 0 1 auto !important;
     }
 
+    
+    /* CSMストアのロゴを個別に拡大 */
+    .csmarin-block img.csmarin-logo-store {
+      max-width: 100% !important;
+      max-height: 48px !important;
+      width: 100% !important;
+      height: auto !important;
+      object-fit: contain !important;
+    }
+
+
     .csmarin-block-coming {
       background-color: rgba(255, 255, 255, 0.6) !important;
       color: #555555 !important;
@@ -307,9 +318,22 @@ render() { this.shadowRoot.innerHTML = ` <style> :host { all: initial; display: 
         id="csmarinMenuToggle"
         aria-expanded="false"
         aria-controls="csmarinDropdown">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2ZM6 4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 12c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-        </svg>
+
+<svg
+  viewBox="0 0 24 24"
+  aria-hidden="true"
+  focusable="false">
+  <circle cx="5" cy="5" r="2.2" />
+  <circle cx="12" cy="5" r="2.2" />
+  <circle cx="19" cy="5" r="2.2" />
+  <circle cx="5" cy="12" r="2.2" />
+  <circle cx="12" cy="12" r="2.2" />
+  <circle cx="19" cy="12" r="2.2" />
+  <circle cx="5" cy="19" r="2.2" />
+  <circle cx="12" cy="19" r="2.2" />
+  <circle cx="19" cy="19" r="2.2" />
+</svg>
+
         <span>他メニュー</span>
       </button>
 
